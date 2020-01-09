@@ -3,6 +3,7 @@
 #include <QMessageBox>
 #include <QMetaType>
 #include <qvalidator.h>
+#include "common.h"
 
 bool MotorControl::plot_pos;
 bool MotorControl::plot_vel;
@@ -26,13 +27,26 @@ MotorControl::MotorControl(QWidget *parent) :
     ui->pushButton_4->setEnabled(0);
     ui->tabWidget->setEnabled(0);
 
-    // input position,velocity limit in pp mode 
-    ui->lineEdit_6->setValidator(new QIntValidator(-50000,50000,this));
-    ui->lineEdit_7->setValidator(new QIntValidator(0,4000,this));
-    // input velocity limit in pv mode
-    ui->lineEdit_8->setValidator(new QIntValidator(-4000,4000,this));
-    // input torque limit in pt mode 
-    ui->lineEdit_9->setValidator(new QIntValidator(-1200,1200,this));
+    #if(USE_MAXON_MOTOR)
+        // input position,velocity limit in pp mode 
+        ui->lineEdit_6->setValidator(new QIntValidator(-50000,50000,this));
+        ui->lineEdit_7->setValidator(new QIntValidator(0,4000,this));
+        // input velocity limit in pv mode
+        ui->lineEdit_8->setValidator(new QIntValidator(-4000,4000,this));
+        // input torque limit in pt mode 
+        ui->lineEdit_9->setValidator(new QIntValidator(-1200,1200,this));
+    #endif
+
+    #if(USE_KOLLMORGEN_MOTOR)
+        // input position,velocity limit in pp mode 
+        ui->lineEdit_6->setValidator(new QIntValidator(-360,360,this));
+        ui->lineEdit_7->setValidator(new QIntValidator(0,120,this));
+        // input velocity limit in pv mode
+        ui->lineEdit_8->setValidator(new QIntValidator(-120,120,this));
+        // input torque limit in pt mode 
+        ui->lineEdit_9->setValidator(new QIntValidator(-1200,1200,this));
+    #endif
+
 
 
 

@@ -1,6 +1,11 @@
 #ifndef COMMON_H
 #define COMMON_H
 
+/*use maxon motor test*/
+#define USE_MAXON_MOTOR 1  
+/*use kollmorgen motor test*/ 
+#define USE_KOLLMORGEN_MOTOR 0
+
 
 /*********************************FILE PATH*********************************/
 #define XENOMAI_PATH " "
@@ -9,21 +14,76 @@
 /*********************************FILE PATH END*****************************/
 
 /*********************************MOTOR************************************/
-// Reduction ratio
-// #define REDUCTION_RATIO 160.0
-#define REDUCTION_RATIO 1.0
 
-// Encoder resolution
-// #define RELATIVE_RESOLUTION  9728.0   /*  */
-#define ABSOLUTE_RESOLUTION 524288.0  /* 2**19 */
-#define RELATIVE_RESOLUTION 4096.0 
+#if(USE_MAXON_MOTOR)
+    // Reduction ratio
+    #define REDUCTION_RATIO 1.0
+
+    // Encoder resolution
+    #define RELATIVE_RESOLUTION 4096.0 
+    #define ABSOLUTE_RESOLUTION 1.0
+
+    //motor rate torque (unit: mN.m)
+    #define RATE_TORQUE 600.0
+
+    // motor max torque (unit: mN.m)
+    #define MAX_TORQUE 1200
+
+    // acceleration  deg/s-2
+    #define ACC 5000
+    #define MAXACC 10000
+
+    //dcceleration 
+    #define DCC 5000
+    #define MAXDCC 10000
+
+    // rate current mA    
+    #define RATE_CURRENT 1500
+
+    // max current mA
+    #define MAX_CURRENT  2200
+
+    #define MAX_PROFILE_VELOCITY 4000
+
+#endif
+
+#if(USE_KOLLMORGEN_MOTOR)
+    // Reduction ratio
+    #define REDUCTION_RATIO 160.0
+
+    // Encoder resolution
+    #define RELATIVE_RESOLUTION  9728.0   /*  */
+    #define ABSOLUTE_RESOLUTION 524288.0  /* 2**19 */
+
+    //motor rate torque (unit: mN.m)
+    #define RATE_TORQUE 600.0
+
+    // motor max torque (unit: mN.m)
+    #define MAX_TORQUE 1200
+
+    // acceleration  deg/s-2
+    #define ACC 8000
+    #define MAXACC 10000
+
+    //dcceleration 
+    #define DCC 8000
+    #define MAXDCC 10000
+
+    // rate current mA    
+    #define RATE_CURRENT 1500
+
+    // max current mA
+    #define MAX_CURRENT  2200
+
+    #define MAX_PROFILE_VELOCITY 4000
+#endif 
+
 
 // torque sensor function: transfer voltage to torque 
 // sensor range : +-200 Nm
 // analog range : +- 10000
 // 0.02 = 200 / 10000
 #define TORQUE_ALALOG_TRANSITION(VOLTAGE)   ((int16_t)(VOLTAGE) * 0.02)
-
 
 #define PI 3.1415926
 
@@ -33,31 +93,11 @@
 // covert degree to radian
 #define PI_DEG_RAD 0.017453293
 
-//motor rate torque (unit: mN.m)
-#define RATE_TORQUE 600.0
-
-// motor max torque (unit: mN.m)
-#define MAX_TORQUE 1200
 
 // motor position range limit
 #define POS_UP_LIMIT    (int32_t(360 * uint8_t(REDUCTION_RATIO)))
 #define POS_DOWN_LIMIT  (int32_t(-360 * uint8_t(REDUCTION_RATIO)))
 
-// acceleration  deg/s-2
-#define ACC 5000
-#define MAXACC 10000
-
-//dcceleration 
-#define DCC 5000
-#define MAXDCC 10000
-
-// rate current mA    
-#define RATE_CURRENT 1500
-
-// max current mA
-#define MAX_CURRENT  2200
-
-#define MAX_PROFILE_VELOCITY 4000
 
 /*convert user torque(mN.m) to motor torque(per thousand of rate torque) */
 #define TORQUE_USER_TO_MOTOR(TORQUE)    (int16_t)(int(TORQUE * 1000.0 / RATE_TORQUE))

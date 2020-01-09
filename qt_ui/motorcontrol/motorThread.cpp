@@ -240,8 +240,8 @@ void MotorThread::sentMotorPos(std::vector<float> data){
     // printf("pos command\n");
     mutex__.lock();
     have_new_command_ = true;
-    pos_command_ = data[0] ;
-    vel_command_ = data[1] ;
+    pos_command_ = DATA_TO_COUNT(data[0]) ;
+    vel_command_ = DATA_TO_COUNT(data[1]) ;
     mutex__.unlock();
 
 }
@@ -250,7 +250,7 @@ void MotorThread::sentMotorVel(float velocity){
     // printf("vel command\n");
     mutex__.lock();
     have_new_command_ = true;
-    vel_command_ = velocity ;
+    vel_command_ = DATA_TO_COUNT(velocity) ;
     mutex__.unlock();
 
 }
@@ -259,6 +259,6 @@ void MotorThread::sentMotorTorque(float torque){
     // printf("tor command\n");
     mutex__.lock();
     have_new_command_ = true;
-    torque_command_ = torque;
+    torque_command_ = TORQUE_USER_TO_MOTOR(torque);
     mutex__.unlock();
 }
